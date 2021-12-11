@@ -23,6 +23,4 @@ data class NetworkCourse(
     val publishedTitle:String,
     @Json(name = "headline")
     val headLine:String
-
-
 )
