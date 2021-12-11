@@ -12,11 +12,5 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        lifecycleScope.launch{
-            val courses= CourseApi.service.getCourses()
-            Log.d(TAG, "onCreate: "+courses.courses)
-        }
-
     }
 }
