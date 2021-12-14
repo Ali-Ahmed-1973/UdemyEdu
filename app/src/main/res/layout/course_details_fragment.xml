@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.aliahmed1973.udemyedu.coursedetails.CourseDetailsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".coursedetails.CourseDetailsFragment">
+
+        <ImageView
+            android:id="@+id/imageView_course"
+            android:layout_width="410dp"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            imgUrl="@{viewModel.courseDetails.courseImage}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/backgrounds/scenic" />
+
+        <ImageView
+            android:id="@+id/imageView_instructor"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="148dp"
+            android:scaleType="centerCrop"
+            imgUrl="@{viewModel.courseDetails.instructor.get(0).instructorImage}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.051"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageView_course"
+            tools:src="@tools:sample/backgrounds/scenic" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_course_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.courseDetails.title}"
+            app:layout_constraintBottom_toTopOf="@+id/tv_instructor_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView_instructor"
+            app:layout_constraintTop_toBottomOf="@+id/imageView_course"></com.google.android.material.textview.MaterialTextView>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_instructor_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.courseDetails.instructor.get(0).name}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView_instructor">
+        </com.google.android.material.textview.MaterialTextView>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_headline"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.courseDetails.headLine}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_instructor_name"></com.google.android.material.textview.MaterialTextView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

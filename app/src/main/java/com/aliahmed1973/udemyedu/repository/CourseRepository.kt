@@ -7,10 +7,11 @@ import com.aliahmed1973.udemyedu.network.asCourseModel
 
 private const val TAG = "CourseRepository"
 class CourseRepository {
-    suspend fun getCoursesFromServer():List<Course>
+    suspend fun getCoursesFromServer(page:Int):List<Course>
     {
         return try {
-            CourseApi.service.getCourses().asCourseModel()
+          val networkresponse=  CourseApi.service.getCourses(page)
+            networkresponse.asCourseModel()
         }catch (e:Exception)
         {
             Log.e(TAG, "getCoursesFromServer: "+e.message )

@@ -5,18 +5,21 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Course(
-                   val id:Int,
+    val id: Int,
 
-                   val title:String,
+    val title: String,
 
-                   val url:String,
+    val url: String,
 
-                   val isPaid:Boolean,
+    val isPaid: Boolean,
 
-                   val price:String,
+    val price: String,
 
-                   val courseImage:String,
+    val courseImage: String,
 
-                   val publishedTitle:String,
+    val publishedTitle: String,
 
-                   val headLine:String):Parcelable
+    val headLine: String,
+
+    val instructor: List<CourseInstructor>
+) : Parcelable

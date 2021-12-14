@@ -6,18 +6,31 @@ import com.aliahmed1973.udemyedu.repository.CourseRepository
 import kotlinx.coroutines.launch
 
 class CoursesViewModel(private val courseRepository: CourseRepository) : ViewModel() {
-
+private var pageNum=1
 private val _courses = MutableLiveData<List<Course>>()
     val courses :LiveData<List<Course>>
         get() =_courses
 
     init {
     viewModelScope.launch {
-       _courses.value= courseRepository.getCoursesFromServer()
+       _courses.value= courseRepository.getCoursesFromServer(pageNum)
     }
-
 }
 
+    fun addNum()
+    {
+        if (pageNum<100) {
+            pageNum++
+        }
+    }
+
+    fun decreaseNum()
+    {
+        if (pageNum>1)
+        {
+            pageNum--
+        }
+    }
 
     @Suppress("UNCHECKED_CAST")
     class Factory(private val repository: CourseRepository): ViewModelProvider.NewInstanceFactory()
