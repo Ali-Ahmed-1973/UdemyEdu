@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/coursesFragment"
+        android:title="@string/home_text"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_home_24"
+        />
+    <item
+        android:id="@+id/myCoursesListFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_bookmark_24"
+        android:title="@string/my_list_text" />
+</menu>

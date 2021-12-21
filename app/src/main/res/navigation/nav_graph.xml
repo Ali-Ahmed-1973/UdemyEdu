@@ -22,4 +22,9 @@
             android:name="courseDetails"
             app:argType="com.aliahmed1973.udemyedu.model.Course" />
     </fragment>
+    <fragment
+        android:id="@+id/myCoursesListFragment"
+        android:name="com.aliahmed1973.udemyedu.mylist.MyCoursesListFragment"
+        android:label="my_courses_list_fragment"
+        tools:layout="@layout/my_courses_list_fragment" />
 </navigation>
