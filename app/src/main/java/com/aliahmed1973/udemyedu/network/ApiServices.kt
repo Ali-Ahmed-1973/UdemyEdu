@@ -8,6 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Headers
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 private const val BASE_URL="https://www.udemy.com/api-2.0/"
@@ -22,6 +23,12 @@ interface Service{
         "Content-Type: application/json;charset=utf-8")
     @GET("courses")
    suspend fun getCourses(@Query("page") page:Int):NetworkCoursesContainer
+
+    @Headers("Accept: application/json, text/plain, */*",
+        "Authorization: Basic "+BuildConfig.Authorization_Key,
+        "Content-Type: application/json;charset=utf-8")
+    @GET("courses/{course_id}/reviews")
+   suspend fun getReviews(@Path("course_id") course_id:Int):NetworkReviewContainer
 }
 
 object CourseApi{
