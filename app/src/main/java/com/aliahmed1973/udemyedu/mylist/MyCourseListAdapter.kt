@@ -21,9 +21,16 @@ class MyCourseListAdapter(private val viewModel: MyCoursesListViewModel):ListAda
 
     }
     inner class CoursViewHolder (private var binding:MylistItemBinding): RecyclerView.ViewHolder(binding.root){
+        lateinit var itemCourse:Course
         fun bind(course: Course?) {
+            itemCourse=course!!
             binding.course=course
             binding.executePendingBindings()
+        }
+        init {
+            binding.imageListIcon.setOnClickListener {
+                viewModel.removeCourseFromList(itemCourse)
+            }
         }
 
     }

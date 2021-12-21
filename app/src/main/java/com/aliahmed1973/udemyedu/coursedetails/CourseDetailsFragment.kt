@@ -32,7 +32,10 @@ class CourseDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val course = CourseDetailsFragmentArgs.fromBundle(requireArguments()).courseDetails
-        viewModel.setCourseDetails(course)
+        viewModel.checkCourseInDatabase(course)
+        viewModel.databaseCourse.observe(viewLifecycleOwner){
+            viewModel.setCourseDetails(it)
+        }
         binding.rvCourseReviews.adapter= ReviewAdapter()
         binding.imageViewMarkIcon.setOnClickListener {
             viewModel.addOrRemoveCourseFromList()

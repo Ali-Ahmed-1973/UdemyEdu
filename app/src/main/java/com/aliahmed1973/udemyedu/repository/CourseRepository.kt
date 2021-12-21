@@ -75,4 +75,25 @@ class CourseRepository(private val database: CourseDatabase) {
             it.asCourseModel()
         }
     }
+
+    fun getMyCourseById(id:Int):LiveData<Course?>
+    {
+        return Transformations.map(database.courseDao.getCourseByID(id)){
+            it?.asCourseModel()
+        }
+    }
+
+    suspend fun deleteCourseFromList(course: Course)
+    {
+        withContext(Dispatchers.IO)
+        {
+            try {
+                database.courseDao.deleteCourse(course.asDatabaseCourse())
+                database.courseDao.deleteCourseInstructor(course.instructor[0].asDBCourseInstructor(course.id))
+            }catch (e:Exception)
+            {
+                Log.e(TAG, "deleteCourseFromList: ${e.message}")
+            }
+        }
+    }
 }
