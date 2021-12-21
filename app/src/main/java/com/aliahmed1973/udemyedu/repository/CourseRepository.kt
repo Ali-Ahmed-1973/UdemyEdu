@@ -1,14 +1,22 @@
 package com.aliahmed1973.udemyedu.repository
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
+import com.aliahmed1973.udemyedu.database.CourseDatabase
+import com.aliahmed1973.udemyedu.database.asCourseModel
+import com.aliahmed1973.udemyedu.database.asDBCourseInstructor
+import com.aliahmed1973.udemyedu.database.asDatabaseCourse
 import com.aliahmed1973.udemyedu.model.Course
 import com.aliahmed1973.udemyedu.model.Review
 import com.aliahmed1973.udemyedu.network.CourseApi
 import com.aliahmed1973.udemyedu.network.asCourseModel
 import com.aliahmed1973.udemyedu.network.asReviewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 private const val TAG = "CourseRepository"
-class CourseRepository {
+class CourseRepository(private val database: CourseDatabase) {
     var count =0
     suspend fun getCoursesFromServer(page:Int):List<Course>
     {
@@ -33,6 +41,38 @@ class CourseRepository {
         {
             Log.e(TAG, "getCourseReviewFromServer: "+e.message )
             emptyList()
+        }
+    }
+
+    suspend fun insertCourseToMylist(course: Course) {
+        withContext(Dispatchers.IO)
+        {
+            try {
+                database.courseDao.insertCourse(course.asDatabaseCourse())
+                database.courseDao.insertCourseInstructor(course.instructor[0].asDBCourseInstructor(course.id))
+            } catch (e: Exception) {
+                Log.e(TAG, "insertCourseToMylist: ${e.message}")
+            }
+
+        }
+    }
+
+    suspend fun insertCourseInstructorToMylist(course: Course) {
+        withContext(Dispatchers.IO)
+        {
+            try {
+                database.courseDao.insertCourseInstructor(course.instructor[0].asDBCourseInstructor(course.id))
+            } catch (e: Exception) {
+                Log.e(TAG, "insertCourseInstructorToMylist: ${e.message}")
+            }
+
+        }
+    }
+
+    fun getMyCourseslist():LiveData<List<Course>>
+    {
+        return Transformations.map(database.courseDao.getCourses()){
+            it.asCourseModel()
         }
     }
 }

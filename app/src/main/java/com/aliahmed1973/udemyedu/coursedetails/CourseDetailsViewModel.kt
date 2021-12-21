@@ -26,6 +26,16 @@ class CourseDetailsViewModel(private val repository: CourseRepository) : ViewMod
         }
 
     }
+
+    fun addOrRemoveCourseFromList()
+    {
+        viewModelScope.launch {
+            _courseDetails.value?.let {
+                repository.insertCourseToMylist(it)
+                repository.insertCourseInstructorToMylist(it)
+            }
+        }
+    }
     @Suppress("UNCHECKED_CAST")
     class Factory(private val repository: CourseRepository): ViewModelProvider.NewInstanceFactory()
     {

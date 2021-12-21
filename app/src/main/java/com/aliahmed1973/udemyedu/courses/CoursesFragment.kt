@@ -10,13 +10,15 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.aliahmed1973.udemyedu.database.getDatabase
 import com.aliahmed1973.udemyedu.databinding.CoursesFragmentBinding
 import com.aliahmed1973.udemyedu.repository.CourseRepository
 
 private const val TAG = "CoursesFragment"
 class CoursesFragment : Fragment() {
     private lateinit var binding: CoursesFragmentBinding
-    private val repository = CourseRepository()
+    private val database by lazy{ getDatabase(this.requireContext())}
+    private val repository by lazy{CourseRepository(database)}
     private val coursesViewModel: CoursesViewModel by viewModels {
         CoursesViewModel.Factory(repository)
     }
@@ -32,7 +34,6 @@ class CoursesFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         with(binding.rvCourses)
         {
             adapter=CoursesAdapter(CoursesAdapter.CourseClickListener {

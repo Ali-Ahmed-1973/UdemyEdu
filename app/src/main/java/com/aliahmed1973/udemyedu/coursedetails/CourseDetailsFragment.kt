@@ -8,12 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.aliahmed1973.udemyedu.R
+import com.aliahmed1973.udemyedu.database.getDatabase
 import com.aliahmed1973.udemyedu.databinding.CourseDetailsFragmentBinding
 import com.aliahmed1973.udemyedu.repository.CourseRepository
 
 class CourseDetailsFragment : Fragment() {
     private lateinit var binding:CourseDetailsFragmentBinding
-    private val repository = CourseRepository()
+    private val database by lazy{ getDatabase(this.requireContext()) }
+    private val repository by lazy{CourseRepository(database)}
     private val viewModel: CourseDetailsViewModel by viewModels{
         CourseDetailsViewModel.Factory(repository)
     }
@@ -32,5 +34,8 @@ class CourseDetailsFragment : Fragment() {
         val course = CourseDetailsFragmentArgs.fromBundle(requireArguments()).courseDetails
         viewModel.setCourseDetails(course)
         binding.rvCourseReviews.adapter= ReviewAdapter()
+        binding.imageViewMarkIcon.setOnClickListener {
+            viewModel.addOrRemoveCourseFromList()
+        }
     }
 }
