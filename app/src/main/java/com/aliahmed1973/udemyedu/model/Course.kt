@@ -1,7 +1,7 @@
 package com.aliahmed1973.udemyedu.model
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Course(
@@ -21,5 +21,7 @@ data class Course(
 
     val headLine: String,
 
-    val instructor: List<CourseInstructor>
+    val instructor: List<CourseInstructor>,
+
+    var isAddedToMylist:Boolean
 ) : Parcelable
