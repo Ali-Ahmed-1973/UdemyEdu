@@ -49,7 +49,10 @@ fun NetworkCoursesContainer.asCourseModel(): List<Course> {
         Course(
             id = it.id, title = it.title, url = it.url,
             isPaid = it.isPaid, price = it.price, courseImage = it.courseImage,
-            publishedTitle = it.publishedTitle, headLine = it.headLine, instructor = courseInstructor
+            publishedTitle = it.publishedTitle,
+            headLine = it.headLine,
+            instructor = courseInstructor,
+            isAddedToMylist = false
         )
     }
 }

@@ -42,6 +42,7 @@
             android:id="@+id/imageView_mark_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            isAdded="@{viewModel.courseDetails.addedToMylist}"
             app:layout_constraintBottom_toBottomOf="@id/imageView_course"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.9"

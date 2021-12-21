@@ -26,3 +26,15 @@ fun bindImage(imageView: ImageView,imgUrl:String)
 {
     imageView.load(imgUrl)
 }
+
+@BindingAdapter("isAdded")
+fun bindIconImage(imageview: ImageView,isAdded:Boolean)
+{
+    if(isAdded) {
+        imageview.setImageResource(R.drawable.ic_baseline_bookmark_24)
+    }
+    else {
+        imageview.setImageResource(R.drawable.ic_baseline_bookmark_border_24)
+    }
+
+}
