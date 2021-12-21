@@ -29,10 +29,9 @@ class CoursesAdapter(val courseClickListener:CourseClickListener):ListAdapter<Co
         lateinit var itemCourse:Course
         fun bind(course: Course)
         {
-            Log.d(TAG, "bind: "+course)
             itemCourse=course
-            binding.tvCourseTitle.text=course.title
-            binding.imageCourse.load(course.courseImage)
+            binding.course=course
+           binding.executePendingBindings()
         }
         init {
             binding.cardViewCourse.setOnClickListener {
