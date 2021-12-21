@@ -31,5 +31,6 @@ class CourseDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val course = CourseDetailsFragmentArgs.fromBundle(requireArguments()).courseDetails
         viewModel.setCourseDetails(course)
+        binding.rvCourseReviews.adapter= ReviewAdapter()
     }
 }

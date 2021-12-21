@@ -19,7 +19,7 @@ class CoursesAdapter(val courseClickListener:CourseClickListener):ListAdapter<Co
         }
 
         override fun areContentsTheSame(oldItem: Course, newItem: Course): Boolean {
-            return oldItem.title==newItem.title
+            return oldItem == newItem
         }
 
     }

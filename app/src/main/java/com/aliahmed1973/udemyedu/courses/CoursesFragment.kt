@@ -1,15 +1,19 @@
 package com.aliahmed1973.udemyedu.courses
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.aliahmed1973.udemyedu.databinding.CoursesFragmentBinding
 import com.aliahmed1973.udemyedu.repository.CourseRepository
 
+private const val TAG = "CoursesFragment"
 class CoursesFragment : Fragment() {
     private lateinit var binding: CoursesFragmentBinding
     private val repository = CourseRepository()
@@ -22,16 +26,42 @@ class CoursesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = CoursesFragmentBinding.inflate(inflater)
-        binding.viewModel = this.coursesViewModel
         binding.lifecycleOwner = this
+        binding.viewModel = this.coursesViewModel
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.rvCourses.adapter = CoursesAdapter(CoursesAdapter.CourseClickListener {
-            findNavController().navigate(CoursesFragmentDirections.actionCoursesFragmentToCourseDetailsFragment(it))
-        })
+        with(binding.rvCourses)
+        {
+            adapter=CoursesAdapter(CoursesAdapter.CourseClickListener {
+                findNavController().navigate(CoursesFragmentDirections.actionCoursesFragmentToCourseDetailsFragment(it))
+            })
 
+            addOnScrollListener(object :RecyclerView.OnScrollListener(){
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if(dy>0)
+                    {
+                        val layoutmanger:LinearLayoutManager=recyclerView.layoutManager as LinearLayoutManager
+                        val visiblePos = layoutmanger.findLastVisibleItemPosition()
+                        val numItems = recyclerView.adapter?.itemCount
+                        if(visiblePos>=numItems!!-1)
+                        {
+                            Log.d(TAG, "onScrolled: "+"yessss")
+                          //  coursesViewModel.addNum()
+                        }
+
+                    }
+
+                }
+            })
+        }
+
+//        coursesViewModel.pageNum.observe(viewLifecycleOwner){
+//            Log.d(TAG, "onViewCreated: pageNum"+"$it")
+//        //    coursesViewModel.getCoursesList(it)
+//        }
     }
 }

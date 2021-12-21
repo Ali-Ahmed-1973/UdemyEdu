@@ -1,21 +1,30 @@
 package com.aliahmed1973.udemyedu.coursedetails
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import android.util.Log
+import androidx.lifecycle.*
 import com.aliahmed1973.udemyedu.model.Course
+import com.aliahmed1973.udemyedu.model.Review
 import com.aliahmed1973.udemyedu.repository.CourseRepository
+import kotlinx.coroutines.launch
 
-class CourseDetailsViewModel(repository: CourseRepository) : ViewModel() {
+private const val TAG = "CourseDetailsViewModel"
+class CourseDetailsViewModel(private val repository: CourseRepository) : ViewModel() {
 
     private val _courseDetails = MutableLiveData<Course>()
     val courseDetails:LiveData<Course>
     get() = _courseDetails
 
+    private val _courseReview =MutableLiveData<List<Review>>()
+    val courseReview:LiveData<List<Review>>
+    get() = _courseReview
+
     fun setCourseDetails(course: Course)
     {
         _courseDetails.value=course
+        viewModelScope.launch {
+            _courseReview.value= repository.getCourseReviewFromServer(course.id)
+        }
+
     }
     @Suppress("UNCHECKED_CAST")
     class Factory(private val repository: CourseRepository): ViewModelProvider.NewInstanceFactory()
