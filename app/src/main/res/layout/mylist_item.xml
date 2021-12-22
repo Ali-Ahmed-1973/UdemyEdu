@@ -11,19 +11,23 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="8dp">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_view_course"
             android:layout_width="370dp"
             android:layout_height="200dp"
-            android:layout_marginBottom="30dp">
+            android:elevation="5dp"
+            app:cardCornerRadius="10dp"
+            android:layout_gravity="center"
+            app:cardPreventCornerOverlap="false">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/image_course"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -33,36 +37,67 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@tools:sample/backgrounds/scenic"></ImageView>
+                    tools:srcCompat="@tools:sample/backgrounds/scenic"></com.google.android.material.imageview.ShapeableImageView>
 
-                <ImageView
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/image_shadow"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/image_shadow"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+                </com.google.android.material.imageview.ShapeableImageView>
+
+
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/image_Instructor"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:scaleType="centerCrop"
                     android:layout_marginStart="16dp"
+                    app:shapeAppearanceOverlay="@style/circle_style"
                     imgUrl="@{course.instructor.get(0).instructorImage}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@tools:sample/backgrounds/scenic"></ImageView>
+                    tools:srcCompat="@tools:sample/backgrounds/scenic">
+                </com.google.android.material.imageview.ShapeableImageView>
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_end="80dp" />
+                    app:layout_constraintGuide_end="60dp" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_instructor_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@{course.instructor.get(0).name}"
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/image_Instructor"
+                    app:layout_constraintEnd_toStartOf="@+id/vertical_guideline"
+                    app:layout_constraintStart_toEndOf="@+id/image_Instructor"
+                    app:layout_constraintTop_toTopOf="@+id/image_Instructor"
+                    app:layout_constraintVertical_bias="0.70"></com.google.android.material.textview.MaterialTextView>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tv_course_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@{course.title}"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primaryTextColor"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/vertical_guideline"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/guideline2"></com.google.android.material.textview.MaterialTextView>
+                    app:layout_constraintStart_toStartOf="@id/image_Instructor"
+                    app:layout_constraintTop_toTopOf="@+id/guideline2">
+                </com.google.android.material.textview.MaterialTextView>
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/vertical_guideline"
