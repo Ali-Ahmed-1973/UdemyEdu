@@ -9,18 +9,22 @@
             type="com.aliahmed1973.udemyedu.mylist.MyCoursesListViewModel" />
     </data>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".mylist.MyCoursesListFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_mylist"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="8dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:clipToPadding="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/mylist_item" />
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
