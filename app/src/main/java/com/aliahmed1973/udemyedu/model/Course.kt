@@ -23,5 +23,7 @@ data class Course(
 
     val instructor: List<CourseInstructor>,
 
+    val courseNote:List<CourseNote?>?,
+
     var isAddedToMylist:Boolean
 ) : Parcelable

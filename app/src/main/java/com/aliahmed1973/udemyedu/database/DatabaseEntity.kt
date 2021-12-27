@@ -3,6 +3,8 @@ package com.aliahmed1973.udemyedu.database
 import androidx.room.*
 import com.aliahmed1973.udemyedu.model.Course
 import com.aliahmed1973.udemyedu.model.CourseInstructor
+import com.aliahmed1973.udemyedu.model.CourseNote
+import java.util.*
 
 
 @Entity(tableName = "mylist_courses")
@@ -36,13 +38,30 @@ data class DatabaseCourseInstructor(
     val mylistId: Int
 )
 
+@Entity
+data class DatabaseCourseNote(
+    @PrimaryKey val id: String,
+    @ColumnInfo(name = "note_text") val noteText: String,
+    val mylistCourseId: Int
+)
+
 data class DBCourseWithInstructor(
     @Embedded val mylistCourse: DatabaseMylistCourse,
     @Relation(
         parentColumn = "id", entityColumn = "mylistId"
     )
-    val Instructors: List<DatabaseCourseInstructor>
+    val Instructors: List<DatabaseCourseInstructor>,
+    @Relation(
+        parentColumn = "id", entityColumn = "mylistCourseId"
+    )
+    val courseNotes: List<DatabaseCourseNote?>
 )
+
+//data class DBCourseWithNotes(
+//    @Embedded val mylistCourse: DatabaseMylistCourse,
+//
+//)
+
 
 fun Course.asDatabaseCourse(): DatabaseMylistCourse {
     return DatabaseMylistCourse(
@@ -79,6 +98,8 @@ fun List<DBCourseWithInstructor>.asCourseModel(): List<Course> {
                 url = it.url
             )
         }
+
+        val notes = it.courseNotes.asNotesModel()
         Course(
             id = it.mylistCourse.id,
             title = it.mylistCourse.title,
@@ -89,13 +110,13 @@ fun List<DBCourseWithInstructor>.asCourseModel(): List<Course> {
             publishedTitle = it.mylistCourse.publishedTitle,
             headLine = it.mylistCourse.headLine,
             instructor = instructors,
-            isAddedToMylist =it.mylistCourse.isAdded
+            courseNote = notes,
+            isAddedToMylist = it.mylistCourse.isAdded
         )
     }
 }
 
-fun DBCourseWithInstructor.asCourseModel():Course
-{
+fun DBCourseWithInstructor.asCourseModel(): Course {
     val instructors = Instructors.map {
         CourseInstructor(
             name = it.name,
@@ -104,6 +125,8 @@ fun DBCourseWithInstructor.asCourseModel():Course
             url = it.url
         )
     }
+
+    val courseNotes = courseNotes.asNotesModel()
     return Course(
         id = mylistCourse.id,
         title = mylistCourse.title,
@@ -114,30 +137,30 @@ fun DBCourseWithInstructor.asCourseModel():Course
         publishedTitle = mylistCourse.publishedTitle,
         headLine = mylistCourse.headLine,
         instructor = instructors,
-        isAddedToMylist =mylistCourse.isAdded
+        courseNote = courseNotes,
+        isAddedToMylist = mylistCourse.isAdded
     )
 }
 
+fun List<DatabaseCourseNote?>.asNotesModel(): List<CourseNote?> {
+    return map {
+        it?.let {
+            CourseNote(id=it.id, noteText = it.noteText)
+        }
 
-//fun Course.asDatabaseCourse(): DBCourseWithInstructor {
-//    val databaseMylistCourse=DatabaseMylistCourse(id=id,
-//        title=title,
-//        url=url,
-//        isPaid=isPaid,
-//        price=price,
-//        courseImage=courseImage,
-//        publishedTitle=publishedTitle,
-//        headLine=headLine)
-//    val databaseCourseInstructor=instructor.map {
-//        DatabaseCourseInstructor(name =it.name,
-//            jopTitle = it.jopTitle,
-//            instructorImage = it.instructorImage,
-//            url = it.url, mylistId = id)
-//    }
-//    return DBCourseWithInstructor(databaseMylistCourse,databaseCourseInstructor)
-//}
+    }
+}
 
-//return Course(id=id,
-//title=title,
-//url=url,
-//isPaid=isPaid,price=price,courseImage=courseImage,publishedTitle=publishedTitle,headLine=headLine, instructor = )
+fun List<CourseNote?>.asDBNotes(courseid: Int): List<DatabaseCourseNote?> {
+    return map {
+        it?.let {
+            DatabaseCourseNote(id = it.id, noteText = it.noteText, mylistCourseId = courseid)
+        }
+
+    }
+}
+
+fun CourseNote.asDBNote(courseid: Int):DatabaseCourseNote {
+    return DatabaseCourseNote(id=id,noteText = noteText, mylistCourseId = courseid)
+}
+

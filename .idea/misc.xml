@@ -5,12 +5,16 @@
       <map>
         <entry key="app/src/main/res/drawable/circle_image.xml" value="0.21296296296296297" />
         <entry key="app/src/main/res/drawable/image_shadow.xml" value="0.21296296296296297" />
+        <entry key="app/src/main/res/drawable/nav_bottom_color.xml" value="0.2101851851851852" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.23278985507246377" />
         <entry key="app/src/main/res/layout/course_details_fragment.xml" value="0.335" />
         <entry key="app/src/main/res/layout/course_item.xml" value="0.22916666666666666" />
         <entry key="app/src/main/res/layout/courses_fragment.xml" value="0.22916666666666666" />
         <entry key="app/src/main/res/layout/my_courses_list_fragment.xml" value="0.13496376811594202" />
+        <entry key="app/src/main/res/layout/my_list_course_details_fragment.xml" value="0.19972826086956522" />
+        <entry key="app/src/main/res/layout/mylist_details_item.xml" value="0.19972826086956522" />
         <entry key="app/src/main/res/layout/mylist_item.xml" value="0.23078169622823183" />
+        <entry key="app/src/main/res/layout/note_details_bottom_sheet.xml" value="0.19972826086956522" />
         <entry key="app/src/main/res/layout/review_item.xml" value="0.45" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.28229166666666666" />
       </map>

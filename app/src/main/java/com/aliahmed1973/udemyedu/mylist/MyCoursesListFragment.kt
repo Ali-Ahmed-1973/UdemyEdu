@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.aliahmed1973.udemyedu.R
 import com.aliahmed1973.udemyedu.database.getDatabase
 import com.aliahmed1973.udemyedu.databinding.MyCoursesListFragmentBinding
@@ -36,6 +37,10 @@ class MyCoursesListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.myListCourses.observe(viewLifecycleOwner){
             adapter.submitList(it)
+        }
+
+        adapter.getCourse {
+            this.findNavController().navigate(MyCoursesListFragmentDirections.actionMyCoursesListFragmentToMyListCourseDetailsFragment(it))
         }
     }
 }
