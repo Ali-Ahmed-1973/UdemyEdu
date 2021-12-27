@@ -4,6 +4,7 @@ import androidx.room.*
 import com.aliahmed1973.udemyedu.model.Course
 import com.aliahmed1973.udemyedu.model.CourseInstructor
 import com.aliahmed1973.udemyedu.model.CourseNote
+import java.util.*
 
 
 @Entity(tableName = "mylist_courses")
@@ -39,7 +40,7 @@ data class DatabaseCourseInstructor(
 
 @Entity
 data class DatabaseCourseNote(
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    @PrimaryKey val id: String,
     @ColumnInfo(name = "note_text") val noteText: String,
     val mylistCourseId: Int
 )
@@ -144,7 +145,7 @@ fun DBCourseWithInstructor.asCourseModel(): Course {
 fun List<DatabaseCourseNote?>.asNotesModel(): List<CourseNote?> {
     return map {
         it?.let {
-            CourseNote(id = it.id, noteText = it.noteText)
+            CourseNote(id=it.id, noteText = it.noteText)
         }
 
     }
@@ -159,25 +160,7 @@ fun List<CourseNote?>.asDBNotes(courseid: Int): List<DatabaseCourseNote?> {
     }
 }
 
-//fun Course.asDatabaseCourse(): DBCourseWithInstructor {
-//    val databaseMylistCourse=DatabaseMylistCourse(id=id,
-//        title=title,
-//        url=url,
-//        isPaid=isPaid,
-//        price=price,
-//        courseImage=courseImage,
-//        publishedTitle=publishedTitle,
-//        headLine=headLine)
-//    val databaseCourseInstructor=instructor.map {
-//        DatabaseCourseInstructor(name =it.name,
-//            jopTitle = it.jopTitle,
-//            instructorImage = it.instructorImage,
-//            url = it.url, mylistId = id)
-//    }
-//    return DBCourseWithInstructor(databaseMylistCourse,databaseCourseInstructor)
-//}
+fun CourseNote.asDBNote(courseid: Int):DatabaseCourseNote {
+    return DatabaseCourseNote(id=id,noteText = noteText, mylistCourseId = courseid)
+}
 
-//return Course(id=id,
-//title=title,
-//url=url,
-//isPaid=isPaid,price=price,courseImage=courseImage,publishedTitle=publishedTitle,headLine=headLine, instructor = )

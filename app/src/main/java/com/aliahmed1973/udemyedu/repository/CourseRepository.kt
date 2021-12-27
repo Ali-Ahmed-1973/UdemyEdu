@@ -67,6 +67,19 @@ class CourseRepository(private val database: CourseDatabase) {
         }
     }
 
+    suspend fun insertNoteToMylistCourse(courseNote: CourseNote, courseId:Int)
+    {
+        withContext(Dispatchers.IO)
+        {
+            try {
+                database.courseDao.insertCourseNote(courseNote.asDBNote(courseId))
+            }catch (e: Exception) {
+                Log.e(TAG, "insertNotesToCourse: ${e.message}")
+            }
+        }
+
+    }
+
     fun getMyCourseslist():LiveData<List<Course>>
     {
         return Transformations.map(database.courseDao.getCourses()){
@@ -81,12 +94,14 @@ class CourseRepository(private val database: CourseDatabase) {
         }
     }
 
-//    fun getCourseNotes(id:Int):LiveData<List<CourseNote?>>
-//    {
-//        return Transformations.map(database.courseDao.getNotesByCourseId(id)){
-//            it?.asNotesModel()
-//        }
-//    }
+    fun getNotesById(id:Int):LiveData<List<CourseNote?>>
+    {
+        return Transformations.map(database.courseDao.getNotesByCourseId(id)){
+            it.asNotesModel()
+        }
+    }
+
+
 
     suspend fun deleteCourseFromList(course: Course)
     {
@@ -96,7 +111,8 @@ class CourseRepository(private val database: CourseDatabase) {
                 database.courseDao.deleteCourse(course.asDatabaseCourse())
                 database.courseDao.deleteCourseInstructor(course.instructor[0].asDBCourseInstructor(course.id))
                 course.courseNote?.asDBNotes(course.id)
-                    ?.let { database.courseDao.deleteCourseNotes(it) }
+                    ?.let {
+                        database.courseDao.deleteCourseNotes(it) }
             }catch (e:Exception)
             {
                 Log.e(TAG, "deleteCourseFromList: ${e.message}")

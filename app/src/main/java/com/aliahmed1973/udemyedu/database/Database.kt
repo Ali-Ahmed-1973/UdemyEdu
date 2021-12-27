@@ -15,8 +15,8 @@ interface CourseDao{
     @Query("SELECT * FROM mylist_courses WHERE id = :id")
     fun getCourseByID(id:Int):LiveData<DBCourseWithInstructor?>
 
-//    @Query("SELECT * FROM DatabaseCourseNote WHERE mylistCourseId = :id")
-//    fun getNotesByCourseId(id:Int):LiveData<List<DatabaseCourseNote>>
+    @Query("SELECT * FROM DatabaseCourseNote WHERE mylistCourseId = :id")
+    fun getNotesByCourseId(id:Int):LiveData<List<DatabaseCourseNote?>>
 
 
     @Insert

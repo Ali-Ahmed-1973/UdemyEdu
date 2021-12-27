@@ -21,7 +21,7 @@ class MyListCourseDetailsFragment : Fragment() {
         MyListCourseDetailsViewModel.Factory(repository)
     }
     private lateinit var adapter: MyListCourseDetailsAdapter
-
+    private lateinit var noteDetailsBottomSheet: NoteDetailsBottomSheet
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,6 +30,7 @@ class MyListCourseDetailsFragment : Fragment() {
         binding.lifecycleOwner=this
         binding.viewModel=viewModel
         adapter=MyListCourseDetailsAdapter()
+        noteDetailsBottomSheet= NoteDetailsBottomSheet(viewModel,adapter)
         return binding.root
     }
 
@@ -40,6 +41,10 @@ class MyListCourseDetailsFragment : Fragment() {
 
         viewModel.courseNotes.observe(viewLifecycleOwner){
             adapter.submitList(it)
+        }
+
+        binding.fabAddNote.setOnClickListener {
+            noteDetailsBottomSheet.show(this.parentFragmentManager, NoteDetailsBottomSheet.TAG)
         }
     }
 }
