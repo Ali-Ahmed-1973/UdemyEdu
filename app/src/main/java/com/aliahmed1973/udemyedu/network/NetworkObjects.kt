@@ -52,6 +52,7 @@ fun NetworkCoursesContainer.asCourseModel(): List<Course> {
             publishedTitle = it.publishedTitle,
             headLine = it.headLine,
             instructor = courseInstructor,
+            courseNote = null,
             isAddedToMylist = false
         )
     }

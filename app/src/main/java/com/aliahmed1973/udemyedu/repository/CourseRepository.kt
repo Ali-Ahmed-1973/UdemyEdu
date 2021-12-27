@@ -3,11 +3,9 @@ package com.aliahmed1973.udemyedu.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import com.aliahmed1973.udemyedu.database.CourseDatabase
-import com.aliahmed1973.udemyedu.database.asCourseModel
-import com.aliahmed1973.udemyedu.database.asDBCourseInstructor
-import com.aliahmed1973.udemyedu.database.asDatabaseCourse
+import com.aliahmed1973.udemyedu.database.*
 import com.aliahmed1973.udemyedu.model.Course
+import com.aliahmed1973.udemyedu.model.CourseNote
 import com.aliahmed1973.udemyedu.model.Review
 import com.aliahmed1973.udemyedu.network.CourseApi
 import com.aliahmed1973.udemyedu.network.asCourseModel
@@ -83,6 +81,13 @@ class CourseRepository(private val database: CourseDatabase) {
         }
     }
 
+//    fun getCourseNotes(id:Int):LiveData<List<CourseNote?>>
+//    {
+//        return Transformations.map(database.courseDao.getNotesByCourseId(id)){
+//            it?.asNotesModel()
+//        }
+//    }
+
     suspend fun deleteCourseFromList(course: Course)
     {
         withContext(Dispatchers.IO)
@@ -90,6 +95,8 @@ class CourseRepository(private val database: CourseDatabase) {
             try {
                 database.courseDao.deleteCourse(course.asDatabaseCourse())
                 database.courseDao.deleteCourseInstructor(course.instructor[0].asDBCourseInstructor(course.id))
+                course.courseNote?.asDBNotes(course.id)
+                    ?.let { database.courseDao.deleteCourseNotes(it) }
             }catch (e:Exception)
             {
                 Log.e(TAG, "deleteCourseFromList: ${e.message}")

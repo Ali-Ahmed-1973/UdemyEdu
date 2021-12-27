@@ -26,5 +26,18 @@
         android:id="@+id/myCoursesListFragment"
         android:name="com.aliahmed1973.udemyedu.mylist.MyCoursesListFragment"
         android:label="my_courses_list_fragment"
-        tools:layout="@layout/my_courses_list_fragment" />
+        tools:layout="@layout/my_courses_list_fragment" >
+        <action
+            android:id="@+id/action_myCoursesListFragment_to_myListCourseDetailsFragment"
+            app:destination="@id/myListCourseDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myListCourseDetailsFragment"
+        android:name="com.aliahmed1973.udemyedu.mylistcoursedetails.MyListCourseDetailsFragment"
+        android:label="my_list_course_details_fragment"
+        tools:layout="@layout/my_list_course_details_fragment" >
+        <argument
+            android:name="listCourse"
+            app:argType="com.aliahmed1973.udemyedu.model.Course" />
+    </fragment>
 </navigation>

@@ -20,6 +20,10 @@ class MyCourseListAdapter(private val viewModel: MyCoursesListViewModel):ListAda
         }
 
     }
+
+    lateinit var courseClickListener: (Course)->Unit
+
+
     inner class CoursViewHolder (private var binding:MylistItemBinding): RecyclerView.ViewHolder(binding.root){
         lateinit var itemCourse:Course
         fun bind(course: Course?) {
@@ -31,10 +35,19 @@ class MyCourseListAdapter(private val viewModel: MyCoursesListViewModel):ListAda
             binding.imageListIcon.setOnClickListener {
                 viewModel.removeCourseFromList(itemCourse)
             }
+
+            binding.cardViewCourse.setOnClickListener {
+                courseClickListener(itemCourse)
+            }
+
         }
 
     }
 
+    fun getCourse(func:(Course)->Unit)
+    {
+        courseClickListener = func
+    }
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
