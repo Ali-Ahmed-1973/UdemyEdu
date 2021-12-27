@@ -5,6 +5,7 @@
       <map>
         <entry key="app/src/main/res/drawable/circle_image.xml" value="0.21296296296296297" />
         <entry key="app/src/main/res/drawable/image_shadow.xml" value="0.21296296296296297" />
+        <entry key="app/src/main/res/drawable/nav_bottom_color.xml" value="0.2101851851851852" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.23278985507246377" />
         <entry key="app/src/main/res/layout/course_details_fragment.xml" value="0.335" />
         <entry key="app/src/main/res/layout/course_item.xml" value="0.22916666666666666" />
