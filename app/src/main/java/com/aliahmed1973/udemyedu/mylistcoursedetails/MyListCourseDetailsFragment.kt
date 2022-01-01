@@ -8,11 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.aliahmed1973.udemyedu.R
 import com.aliahmed1973.udemyedu.database.getDatabase
 import com.aliahmed1973.udemyedu.databinding.MyCoursesListFragmentBinding
 import com.aliahmed1973.udemyedu.databinding.MyListCourseDetailsFragmentBinding
 import com.aliahmed1973.udemyedu.repository.CourseRepository
+import com.google.android.material.snackbar.Snackbar
 
 private const val TAG = "MyListCourseDetailsFrag"
 class MyListCourseDetailsFragment : Fragment() {
@@ -33,6 +36,7 @@ class MyListCourseDetailsFragment : Fragment() {
         binding.viewModel=viewModel
         adapter=MyListCourseDetailsAdapter()
         binding.rvCourseNotes.adapter=adapter
+        itemTouchHelper.attachToRecyclerView(binding.rvCourseNotes)
         noteDetailsBottomSheet= NoteDetailsBottomSheet(viewModel)
         return binding.root
     }
@@ -42,10 +46,8 @@ class MyListCourseDetailsFragment : Fragment() {
         viewModel.setCourseDetails(course)
 
         viewModel.courseNotes.observe(viewLifecycleOwner){
-            Log.d(TAG, "onViewCreated: $it")
-            it?.let {
                 adapter.submitList(it)
-            }
+            viewModel.courseNotesList= it!!
         }
 
         binding.fabAddNote.setOnClickListener {
@@ -56,7 +58,25 @@ class MyListCourseDetailsFragment : Fragment() {
             viewModel.currentCourseNote=it
             noteDetailsBottomSheet.show(this.childFragmentManager, NoteDetailsBottomSheet.TAG)
         }
+
     }
+    private val itemTouchHelper = ItemTouchHelper(object: ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT){
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            TODO("Not yet implemented")
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            val deletedNotePos = viewHolder.adapterPosition
+            viewModel.deleteNote(deletedNotePos)
+            Snackbar.make(binding.rvCourseNotes, "Deleted", Snackbar.LENGTH_LONG).show()
+        }
+
+    }
+    )
 
 
 }

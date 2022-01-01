@@ -20,13 +20,14 @@ class MyListCourseDetailsViewModel(private val repository: CourseRepository) : V
 
     var currentCourseNote:CourseNote? = null
 
+    lateinit var courseNotesList:List<CourseNote?>
+
     fun setCourseDetails(course: Course)
     {
         _courseDetails.value = course
         viewModelScope.launch {
             courseNotes=  repository.getNotesById(course.id)
         }
-
 
     }
 
@@ -43,6 +44,14 @@ class MyListCourseDetailsViewModel(private val repository: CourseRepository) : V
             repository.UpdateOldNote(courseNote,_courseDetails.value!!.id)
         }
     }
+
+    fun deleteNote(deletedNotePos: Int) {
+        val deletedNote = courseNotesList[deletedNotePos]
+        viewModelScope.launch {
+            repository.deleteNoteFromList(deletedNote!!,_courseDetails.value!!.id)
+        }
+    }
+
     @Suppress("UNCHECKED_CAST")
     class Factory(private val repository: CourseRepository): ViewModelProvider.NewInstanceFactory()
     {

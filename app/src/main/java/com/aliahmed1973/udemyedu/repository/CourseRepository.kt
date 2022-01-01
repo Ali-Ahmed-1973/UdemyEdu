@@ -131,4 +131,16 @@ class CourseRepository(private val database: CourseDatabase) {
     }
 
 
+    suspend fun deleteNoteFromList(courseNote: CourseNote,courseId: Int)
+    {
+        withContext(Dispatchers.IO)
+        {
+            try {
+                database.courseDao.deleteCourseNote(courseNote.asDBNote(courseId))
+            }catch (e:Exception)
+            {
+                Log.e(TAG, "deleteNoteFromList: ${e.message}")
+            }
+        }
+    }
 }

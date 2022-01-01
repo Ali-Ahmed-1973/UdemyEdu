@@ -39,6 +39,9 @@ interface CourseDao{
 
     @Delete
     fun deleteCourseNotes(Notes: List<DatabaseCourseNote?>)
+
+    @Delete
+    fun deleteCourseNote(Note: DatabaseCourseNote)
 }
 
 @Database(entities = [DatabaseMylistCourse::class,DatabaseCourseInstructor::class,DatabaseCourseNote::class],version=1)
