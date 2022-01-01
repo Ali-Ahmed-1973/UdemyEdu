@@ -20,9 +20,21 @@ class MyListCourseDetailsAdapter:ListAdapter<CourseNote,MyListCourseDetailsAdapt
         }
 
     }
+
+    private lateinit var onItemClickListener:(CourseNote)->Unit
+
     inner class NoteViewHolder(private var binding:MylistDetailsItemBinding): RecyclerView.ViewHolder(binding.root) {
+        private lateinit var courseNote: CourseNote
         fun bind(noteCourse: CourseNote?) {
             binding.tvNote.text=noteCourse?.noteText
+            noteCourse?.let {
+                courseNote=it
+            }
+        }
+        init {
+            binding.tvNote.setOnClickListener {
+                onItemClickListener(courseNote)
+            }
         }
 
     }
@@ -41,6 +53,11 @@ class MyListCourseDetailsAdapter:ListAdapter<CourseNote,MyListCourseDetailsAdapt
     ) {
         val noteCourse = getItem(position)
         holder.bind(noteCourse)
+    }
+
+    fun getCourseNote(func:(CourseNote)->Unit)
+    {
+        onItemClickListener=func
     }
 
 

@@ -7,5 +7,5 @@ import java.util.*
 @Parcelize
 data class CourseNote(
     val id:String = UUID.randomUUID().toString(),
-    val noteText:String
+    var noteText:String
 ):Parcelable

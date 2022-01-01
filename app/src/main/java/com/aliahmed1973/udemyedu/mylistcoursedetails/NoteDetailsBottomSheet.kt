@@ -1,17 +1,19 @@
 package com.aliahmed1973.udemyedu.mylistcoursedetails
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
 import com.aliahmed1973.udemyedu.databinding.NoteDetailsBottomSheetBinding
 import com.aliahmed1973.udemyedu.model.CourseNote
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class NoteDetailsBottomSheet(private val viewModel: MyListCourseDetailsViewModel,
-                             private val adapter:MyListCourseDetailsAdapter):BottomSheetDialogFragment() {
+class NoteDetailsBottomSheet(private val viewModel: MyListCourseDetailsViewModel) : BottomSheetDialogFragment() {
 
-    private lateinit var binding:NoteDetailsBottomSheetBinding
+    private lateinit var binding: NoteDetailsBottomSheetBinding
+    private lateinit var note: CourseNote
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -24,15 +26,39 @@ class NoteDetailsBottomSheet(private val viewModel: MyListCourseDetailsViewModel
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.etNoteText.doAfterTextChanged {
+            note.noteText = it.toString()
+        }
+
         binding.btnAdd.setOnClickListener {
-            val newNote = CourseNote(noteText = binding.etNoteText.text.toString())
-            viewModel.addNewNote(newNote)
-            adapter.notifyDataSetChanged()
+            if (viewModel.currentCourseNote != null) {
+                viewModel.updateNote(note)
+            } else {
+                viewModel.addNewNote(note)
+            }
             this.dismiss()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (viewModel.currentCourseNote != null) {
+            note = viewModel.currentCourseNote!!
+            Log.d(TAG, "onViewCreated: ${viewModel.currentCourseNote}")
+        } else {
+            note = CourseNote(noteText = "")
+        }
+        binding.etNoteText.setText(note.noteText)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.etNoteText.setText("")
+        viewModel.currentCourseNote = null
     }
 
     companion object {
         const val TAG = "NoteDetailsBottomSheet"
     }
+
 }

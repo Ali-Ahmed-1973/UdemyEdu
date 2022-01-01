@@ -25,8 +25,11 @@ interface CourseDao{
     @Insert
     fun insertCourseInstructor(CourseInstructor: DatabaseCourseInstructor)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCourseNote(Note: DatabaseCourseNote)
+
+    @Update
+    fun updateCourseNote(Note: DatabaseCourseNote)
 
     @Delete
     fun deleteCourse(course: DatabaseMylistCourse)
@@ -36,6 +39,9 @@ interface CourseDao{
 
     @Delete
     fun deleteCourseNotes(Notes: List<DatabaseCourseNote?>)
+
+    @Delete
+    fun deleteCourseNote(Note: DatabaseCourseNote)
 }
 
 @Database(entities = [DatabaseMylistCourse::class,DatabaseCourseInstructor::class,DatabaseCourseNote::class],version=1)
