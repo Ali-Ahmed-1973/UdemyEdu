@@ -2,6 +2,7 @@ package com.aliahmed1973.udemyedu.mylistcoursedetails
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import com.aliahmed1973.udemyedu.databinding.MyCoursesListFragmentBinding
 import com.aliahmed1973.udemyedu.databinding.MyListCourseDetailsFragmentBinding
 import com.aliahmed1973.udemyedu.repository.CourseRepository
 
+private const val TAG = "MyListCourseDetailsFrag"
 class MyListCourseDetailsFragment : Fragment() {
     private lateinit var binding: MyListCourseDetailsFragmentBinding
     private val database by lazy{ getDatabase(this.requireContext()) }
@@ -30,21 +32,31 @@ class MyListCourseDetailsFragment : Fragment() {
         binding.lifecycleOwner=this
         binding.viewModel=viewModel
         adapter=MyListCourseDetailsAdapter()
-        noteDetailsBottomSheet= NoteDetailsBottomSheet(viewModel,adapter)
+        binding.rvCourseNotes.adapter=adapter
+        noteDetailsBottomSheet= NoteDetailsBottomSheet(viewModel)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val course = MyListCourseDetailsFragmentArgs.fromBundle(requireArguments()).listCourse
         viewModel.setCourseDetails(course)
-        binding.rvCourseNotes.adapter=adapter
 
         viewModel.courseNotes.observe(viewLifecycleOwner){
-            adapter.submitList(it)
+            Log.d(TAG, "onViewCreated: $it")
+            it?.let {
+                adapter.submitList(it)
+            }
         }
 
         binding.fabAddNote.setOnClickListener {
-            noteDetailsBottomSheet.show(this.parentFragmentManager, NoteDetailsBottomSheet.TAG)
+            noteDetailsBottomSheet.show(this.childFragmentManager, NoteDetailsBottomSheet.TAG)
+        }
+        
+        adapter.getCourseNote {
+            viewModel.currentCourseNote=it
+            noteDetailsBottomSheet.show(this.childFragmentManager, NoteDetailsBottomSheet.TAG)
         }
     }
+
+
 }

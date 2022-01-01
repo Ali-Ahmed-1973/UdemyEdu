@@ -14,29 +14,34 @@ class MyListCourseDetailsViewModel(private val repository: CourseRepository) : V
     val courseDetails: LiveData<Course>
         get() = _courseDetails
 
-    private val _courseNotes =MutableLiveData<List<CourseNote?>?>()
-    val courseNotes:LiveData<List<CourseNote?>?>
-        get() = _courseNotes
 
-    private var _mutableCourseNotes = mutableListOf<CourseNote?>()
+    lateinit var courseNotes:LiveData<List<CourseNote?>?>
 
+
+    var currentCourseNote:CourseNote? = null
 
     fun setCourseDetails(course: Course)
     {
         _courseDetails.value = course
-        _courseNotes.value= course.courseNote
-        course.courseNote?.let { _mutableCourseNotes.addAll(it) }
+        viewModelScope.launch {
+            courseNotes=  repository.getNotesById(course.id)
+        }
+
+
     }
 
     fun addNewNote(courseNote: CourseNote)
     {
+            viewModelScope.launch {
+                repository.insertNoteToMylistCourse(courseNote,_courseDetails.value!!.id)
+            }
+    }
+
+    fun updateNote(courseNote: CourseNote)
+    {
         viewModelScope.launch {
-              repository.insertNoteToMylistCourse(courseNote,_courseDetails.value!!.id)
+            repository.UpdateOldNote(courseNote,_courseDetails.value!!.id)
         }
-        _mutableCourseNotes.add(courseNote)
-        _courseNotes.value = _mutableCourseNotes
-        Log.d(TAG, "addNewNote: _mutableCourseNotes: $_mutableCourseNotes")
-        Log.d(TAG, "addNewNote: _courseNotes: ${_courseNotes.value}")
     }
     @Suppress("UNCHECKED_CAST")
     class Factory(private val repository: CourseRepository): ViewModelProvider.NewInstanceFactory()

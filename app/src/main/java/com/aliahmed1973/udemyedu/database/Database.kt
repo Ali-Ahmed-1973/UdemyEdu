@@ -25,8 +25,11 @@ interface CourseDao{
     @Insert
     fun insertCourseInstructor(CourseInstructor: DatabaseCourseInstructor)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCourseNote(Note: DatabaseCourseNote)
+
+    @Update
+    fun updateCourseNote(Note: DatabaseCourseNote)
 
     @Delete
     fun deleteCourse(course: DatabaseMylistCourse)
