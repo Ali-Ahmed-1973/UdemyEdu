@@ -2,6 +2,7 @@ package com.aliahmed1973.udemyedu.coursedetails
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import com.aliahmed1973.udemyedu.database.getDatabase
 import com.aliahmed1973.udemyedu.databinding.CourseDetailsFragmentBinding
 import com.aliahmed1973.udemyedu.repository.CourseRepository
 
+private const val TAG = "CourseDetailsFragment"
 class CourseDetailsFragment : Fragment() {
     private lateinit var binding:CourseDetailsFragmentBinding
     private val database by lazy{ getDatabase(this.requireContext()) }
@@ -34,7 +36,12 @@ class CourseDetailsFragment : Fragment() {
         val course = CourseDetailsFragmentArgs.fromBundle(requireArguments()).courseDetails
         viewModel.checkCourseInDatabase(course)
         viewModel.databaseCourse.observe(viewLifecycleOwner){
-            viewModel.setCourseDetails(it)
+            if(it!=null) {
+                viewModel.setCourse(it)
+            }else
+            {
+                viewModel.setCourse(course.copy(isAddedToMylist = false))
+            }
         }
         binding.rvCourseReviews.adapter= ReviewAdapter()
         binding.imageViewMarkIcon.setOnClickListener {

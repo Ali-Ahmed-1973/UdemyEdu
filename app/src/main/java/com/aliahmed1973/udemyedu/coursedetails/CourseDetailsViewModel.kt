@@ -7,6 +7,7 @@ import com.aliahmed1973.udemyedu.model.Review
 import com.aliahmed1973.udemyedu.repository.CourseRepository
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 private const val TAG = "CourseDetailsViewModel"
@@ -16,30 +17,38 @@ class CourseDetailsViewModel(private val repository: CourseRepository) : ViewMod
     val courseDetails:LiveData<Course>
     get() = _courseDetails
 
-    private val _courseReview =MutableLiveData<List<Review>>()
-    val courseReview:LiveData<List<Review>>
-    get() = _courseReview
+    private var _courseId = MutableStateFlow(0)
 
-    lateinit var  databaseCourse:LiveData<Course?>
+
+    val courseReview:LiveData<List<Review>> = _courseId.flatMapLatest {
+    flow {
+       emit(repository.getCourseReviewFromServer(it))
+    }
+    }.asLiveData()
+
+
+     val databaseCourse:LiveData<Course?> = _courseId.flatMapLatest {
+         repository.getMyCourseById(it)
+     }.asLiveData()
+
+
 
     fun checkCourseInDatabase(course: Course)
     {
         _courseDetails.value=course
-        databaseCourse =repository.getMyCourseById(course.id).asLiveData()
-        viewModelScope.launch {
-            _courseReview.value= repository.getCourseReviewFromServer(course.id)
-        }
+        _courseId.value = course.id
+
     }
 
-    fun setCourseDetails(course: Course?)
+
+    fun setCourse(course: Course)
     {
-        Log.d(TAG, "setCourseDetails: "+course)
-        _courseDetails.value = course ?: _courseDetails.value?.copy(isAddedToMylist = false)
+        _courseDetails.value=course
     }
-
 
     fun addOrRemoveCourseFromList()
     {
+        Log.d(TAG, "setCourseDetails: "+courseDetails.value)
         viewModelScope.launch {
             _courseDetails.value?.let {
                 if(it.isAddedToMylist)

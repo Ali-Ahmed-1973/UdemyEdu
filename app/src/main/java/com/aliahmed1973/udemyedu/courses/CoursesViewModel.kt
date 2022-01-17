@@ -19,12 +19,14 @@ private val _courses = MutableLiveData<List<Course>>()
         get() =_courses
 
     init {
+
         viewModelScope.launch {
            val job= launch {
                 _courses.value = courseRepository.getCoursesFromServer(_pageNum.value!!)
             }
             job.join()
             count=courseRepository.count
+
         }
     }
 
