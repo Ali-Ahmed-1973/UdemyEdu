@@ -29,6 +29,7 @@ class CoursesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = CoursesFragmentBinding.inflate(inflater,container,false)
+        binding.lifecycleOwner=this
         binding.viewModel = this.coursesViewModel
         return binding.root
     }
