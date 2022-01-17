@@ -16,7 +16,8 @@ import com.aliahmed1973.udemyedu.repository.CourseRepository
 
 private const val TAG = "CoursesFragment"
 class CoursesFragment : Fragment() {
-    private lateinit var binding: CoursesFragmentBinding
+    private var _binding: CoursesFragmentBinding?=null
+    private  val binding get() = _binding!!
     private val database by lazy{ getDatabase(this.requireContext())}
     private val repository by lazy{CourseRepository(database)}
     private val coursesViewModel: CoursesViewModel by viewModels {
@@ -27,8 +28,7 @@ class CoursesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = CoursesFragmentBinding.inflate(inflater)
-        binding.lifecycleOwner = this
+        _binding = CoursesFragmentBinding.inflate(inflater,container,false)
         binding.viewModel = this.coursesViewModel
         return binding.root
     }
@@ -39,7 +39,7 @@ class CoursesFragment : Fragment() {
             adapter=CoursesAdapter(CoursesAdapter.CourseClickListener {
                 findNavController().navigate(CoursesFragmentDirections.actionCoursesFragmentToCourseDetailsFragment(it))
             })
-
+            setHasFixedSize(true)
             addOnScrollListener(object :RecyclerView.OnScrollListener(){
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
@@ -59,10 +59,14 @@ class CoursesFragment : Fragment() {
                 }
             })
         }
-
 //        coursesViewModel.pageNum.observe(viewLifecycleOwner){
 //            Log.d(TAG, "onViewCreated: pageNum"+"$it")
 //        //    coursesViewModel.getCoursesList(it)
 //        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding=null
     }
 }
