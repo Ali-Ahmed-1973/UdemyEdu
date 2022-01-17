@@ -7,7 +7,7 @@ import kotlinx.coroutines.launch
 
 class MyCoursesListViewModel(private val repository: CourseRepository) : ViewModel() {
 
-    var myListCourses:LiveData<List<Course>> = repository.getMyCourseslist()
+    var myListCourses:LiveData<List<Course>> = repository.getMyCourseslist().asLiveData()
 
 
     fun removeCourseFromList(course: Course)

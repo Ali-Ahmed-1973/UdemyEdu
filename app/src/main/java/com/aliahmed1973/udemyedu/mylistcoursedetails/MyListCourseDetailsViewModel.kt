@@ -26,7 +26,7 @@ class MyListCourseDetailsViewModel(private val repository: CourseRepository) : V
     {
         _courseDetails.value = course
         viewModelScope.launch {
-            courseNotes=  repository.getNotesById(course.id)
+            courseNotes=  repository.getNotesById(course.id).asLiveData()
         }
 
     }

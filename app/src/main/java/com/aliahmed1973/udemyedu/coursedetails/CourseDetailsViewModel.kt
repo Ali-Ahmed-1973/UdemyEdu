@@ -25,7 +25,7 @@ class CourseDetailsViewModel(private val repository: CourseRepository) : ViewMod
     fun checkCourseInDatabase(course: Course)
     {
         _courseDetails.value=course
-        databaseCourse =repository.getMyCourseById(course.id)
+        databaseCourse =repository.getMyCourseById(course.id).asLiveData()
         viewModelScope.launch {
             _courseReview.value= repository.getCourseReviewFromServer(course.id)
         }

@@ -4,19 +4,20 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.aliahmed1973.udemyedu.model.Course
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CourseDao{
     @Transaction
     @Query("SELECT * FROM mylist_courses")
-    fun getCourses(): LiveData<List<DBCourseWithInstructor>>
+    fun getCourses(): Flow<List<DBCourseWithInstructor>>
 
     @Transaction
     @Query("SELECT * FROM mylist_courses WHERE id = :id")
-    fun getCourseByID(id:Int):LiveData<DBCourseWithInstructor?>
+    fun getCourseByID(id:Int):Flow<DBCourseWithInstructor?>
 
     @Query("SELECT * FROM DatabaseCourseNote WHERE mylistCourseId = :id")
-    fun getNotesByCourseId(id:Int):LiveData<List<DatabaseCourseNote?>>
+    fun getNotesByCourseId(id:Int):Flow<List<DatabaseCourseNote?>>
 
 
     @Insert

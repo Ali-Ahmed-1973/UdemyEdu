@@ -11,6 +11,8 @@ import com.aliahmed1973.udemyedu.network.CourseApi
 import com.aliahmed1973.udemyedu.network.asCourseModel
 import com.aliahmed1973.udemyedu.network.asReviewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 private const val TAG = "CourseRepository"
@@ -90,23 +92,23 @@ class CourseRepository(private val database: CourseDatabase) {
         }
     }
 
-    fun getMyCourseslist():LiveData<List<Course>>
+    fun getMyCourseslist():Flow<List<Course>>
     {
-        return Transformations.map(database.courseDao.getCourses()){
+        return database.courseDao.getCourses().map {
             it.asCourseModel()
         }
     }
 
-    fun getMyCourseById(id:Int):LiveData<Course?>
+    fun getMyCourseById(id:Int):Flow<Course?>
     {
-        return Transformations.map(database.courseDao.getCourseByID(id)){
+        return database.courseDao.getCourseByID(id).map {
             it?.asCourseModel()
         }
     }
 
-    fun getNotesById(id:Int):LiveData<List<CourseNote?>?>
+    fun getNotesById(id:Int):Flow<List<CourseNote?>?>
     {
-        return Transformations.map(database.courseDao.getNotesByCourseId(id)){
+        return database.courseDao.getNotesByCourseId(id).map{
             it.asNotesModel()
         }
     }
