@@ -1,5 +1,5 @@
 # UdemyEdu
-An education app that uses Udemy Apis to make clients track the contents of the courses.
+An education app that uses Udemy Apis to make learners browse, track courses and take notes offline. 
 
 #### Developed with:
 - Kotlin
