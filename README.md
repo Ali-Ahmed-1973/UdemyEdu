@@ -10,6 +10,7 @@ An education app that uses Udemy Apis to make clients track the contents of the 
 - Single activity
 - dataBinding
 - viewBinding
+- Coil
 - Coroutines
 - Retrofit
 - Repository pattern
